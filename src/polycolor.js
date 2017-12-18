@@ -1,14 +1,14 @@
 export default function(L) {
-  var Renderer = L.Renderer.RendererGradient = L.Canvas.extend({
+  const Renderer = L.Renderer.RendererGradient = L.Canvas.extend({
     _updatePoly: function(layer) {
-      if (!this._drawing) { return; }
+      if (!this._drawing) return;
 
-      var i, j, len2, p, prev,
-          parts = layer._parts,
-          len = parts.length,
-          ctx = this._ctx;
+      let i, j, len2, p, prev;
+      const parts = layer._parts;
+      const len = parts.length;
+      const ctx = this._ctx;
 
-      if (!len) { return; }
+      if (!len) return;
 
       this._drawnLayers[layer._leaflet_id] = layer;
 
@@ -30,7 +30,7 @@ export default function(L) {
     },
 
     _fillGradient: function(ctx, layer, prev, p, j) {
-      var options = layer.options;
+      const options = layer.options;
 
       if (options.fill) {
         ctx.globalAlpha = options.fillOpacity;
@@ -53,15 +53,15 @@ export default function(L) {
     },
 
     _getStrokeGradient: function(ctx, layer, prev, p, j) {
-      var options = layer.options;
+      const options = layer.options;
 
       if (!options.colors[j - 1] || !options.colors[j])
         return options.color;
 
       // Create a gradient for each segment, pick start and end colors from colors options
-      var gradient = ctx.createLinearGradient(prev.x, prev.y, p.x, p.y);
-      var gradientStartRGB = options.colors[j - 1];
-      var gradientEndRGB = options.colors[j];
+      const gradient = ctx.createLinearGradient(prev.x, prev.y, p.x, p.y);
+      const gradientStartRGB = options.colors[j - 1];
+      const gradientEndRGB = options.colors[j];
 
       gradient.addColorStop(0, gradientStartRGB);
       gradient.addColorStop(1, gradientEndRGB);
@@ -70,7 +70,7 @@ export default function(L) {
     },
   });
 
-  var Polycolor = L.Polyline.extend({
+  const Polycolor = L.Polycolor = L.Polyline.extend({
     _colorParts: [],
 
     options: {
@@ -86,7 +86,7 @@ export default function(L) {
 
     // TODO add clip and smoothFactor
     _clipPoints: function() {
-      var bounds = this._renderer._bounds;
+      const bounds = this._renderer._bounds;
 
       this._parts = [];
       this._colorParts = [];
@@ -99,7 +99,7 @@ export default function(L) {
     },
 
     _update: function() {
-      if (!this._map) { return; }
+      if (!this._map) return;
 
       this._clipPoints();
       this._updatePath();

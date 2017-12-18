@@ -13,9 +13,13 @@ $ npm install --save leaflet-polycolor
 ### browser
 
 - Download or clone this github project
+- Include `dist/polycolor.min.js` in your project
+
+### compile
+
+- Download or clone this github project
 - Run `npm i` in the project folder
 - Run `npm run build`
-- Include `dist/polycolor.min.js` in your project
 
 ## Usage
 
@@ -23,10 +27,10 @@ $ npm install --save leaflet-polycolor
 
 ```js
 import L from 'leaflet';
-import leaflet-polycolor from 'leaflet-polycolor';
-leaflet-polycolor(L);
+import leafletPolycolor from 'leaflet-polycolor';
+leafletPolycolor(L);
 
-const map = L.map(el, {
+const map = L.map('map', {
     center: [45.1834782, 5.7831946],
     zoom: 13
 });
@@ -49,9 +53,10 @@ const polyline = L.polycolor(latLngs, {
 #### Options
 - colors `<Array>` : An array of rgb colors strings `rgb(x,y,z)`
 
-`clip` and `smoothFactor` are disabled for now, planned in v1.0.0.
-If `colors` are undefined, default `color` parameter is used.
-To leave default color, use `null` in colors array : `['rgb(0, 0, 0)', null, 'rgb(0, 45, 120)']`
+If `colors` are `undefined`, the default `color` parameter is used.
+To leave default color, use `null` in colors. `['rgb(0, 0, 0)', null, 'rgb(0, 45, 120)']`
+
+`clip` and `smoothFactor` parameters are disabled for now, planned in v1.0.0.
 
 ## License
 

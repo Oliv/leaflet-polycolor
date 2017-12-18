@@ -46,7 +46,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-dist/
 node_modules/
 *.sublime-project
 *.sublime-workspace
