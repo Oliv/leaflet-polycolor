@@ -18,53 +18,65 @@
 
     <p>Color each polyline segment</p>
 
-    <h2>Import file - es6</h2>
+    <h2>es6</h2>
 
-    <div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-smi">leafletPolycolor</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>leaflet-polycolor<span class="pl-pds">'</span></span>;
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-smi">L</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>leaflet<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> <span class="pl-smi">leafletPolycolor</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>leaflet-polycolor<span class="pl-pds">'</span></span>;
 <span class="pl-en">leafletPolycolor</span>(<span class="pl-c1">L</span>);
-</pre></div>
 
-<h2>Import file - include .min.js file</h2>
-
-<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> <span class="pl-c1">leafletPolycolor</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-en">require(</span><span class="pl-pds">'</span>leaflet-polycolor<span class="pl-pds">'</span></span>);
-<span class="pl-en">leafletPolycolor</span>.<span class="pl-en">default</span>(<span class="pl-c1">L</span>);
-</pre></div>
-
-    <h2>Plugin usage</h2>
-
-    <div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">map</span> <span class="pl-k">=</span> <span class="pl-c1">L</span>.<span class="pl-en">map</span>(<span class="pl-s"><span class="pl-pds">'</span>map<span class="pl-pds">'</span></span>, {
+<span class="pl-k">const</span> <span class="pl-c1">map</span> <span class="pl-k">=</span> <span class="pl-c1">L</span>.<span class="pl-en">map</span>(<span class="pl-s"><span class="pl-pds">'</span>map<span class="pl-pds">'</span></span>, {
     center<span class="pl-k">:</span> [<span class="pl-c1">45.1834782</span>, <span class="pl-c1">5.7831946</span>],
     zoom<span class="pl-k">:</span> <span class="pl-c1">13</span>
 });
 
 <span class="pl-c1">L</span>.<span class="pl-en">tileLayer</span>(<span class="pl-s"><span class="pl-pds">'</span>http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}<span class="pl-pds">'</span></span>, {foo<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span>}).<span class="pl-en">addTo</span>(map);
 
-<span class="pl-k">const</span> <span class="pl-c1">latLngs</span> <span class="pl-k">=</span> [[<span class="pl-c1">45.18</span>, <span class="pl-c1">5.78</span>], [<span class="pl-c1">45.19</span>, <span class="pl-c1">5.79</span>], [<span class="pl-c1">45.17</span>, <span class="pl-c1">5.77</span>]];
-<span class="pl-k">const</span> <span class="pl-c1">colors</span> <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>rgb(0, 0, 0)<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>rgb(40, 10, 0)<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>rgb(0, 45, 120)<span class="pl-pds">'</span></span>];
+<span class="pl-k">const</span> <span class="pl-c1">latLngs</span> <span class="pl-k">=</span> [[<span class="pl-c1">45.187273</span>, <span class="pl-c1">5.758124</span>], [<span class="pl-c1">45.182772</span>, <span class="pl-c1">5.758516</span>], [<span class="pl-c1">45.185767</span>, <span class="pl-c1">5.747106</span>], [<span class="pl-c1">45.176569</span>, <span class="pl-c1">5.752082</span>], [<span class="pl-c1">45.171863</span>, <span class="pl-c1">5.757120</span>], [<span class="pl-c1">45.168354</span>, <span class="pl-c1">5.755178</span>]];
+<span class="pl-k">const</span> <span class="pl-c1">colors</span> <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>rgb(20, 200, 100)<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>rgb(200, 100, 20)<span class="pl-pds">'</span></span>, <span class="pl-c1">null</span>, <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">'</span>rgb(20, 200, 100)<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>rgb(0, 0, 0)<span class="pl-pds">'</span></span>];
 
 <span class="pl-k">const</span> <span class="pl-c1">polyline</span> <span class="pl-k">=</span> <span class="pl-c1">L</span>.<span class="pl-en">polycolor</span>(latLngs, {
   colors<span class="pl-k">:</span> colors,
   weight<span class="pl-k">:</span> <span class="pl-c1">5</span>
 }).<span class="pl-en">addTo</span>(map);</pre></div>
 
+    <h2>normal include of the minified file</h2>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> leafletPolycolor <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>leaflet-polycolor<span class="pl-pds">'</span></span>);
+<span class="pl-smi">leafletPolycolor</span>.<span class="pl-en">default</span>(<span class="pl-c1">L</span>);
+
+<span class="pl-k">var</span> map <span class="pl-k">=</span> <span class="pl-c1">L</span>.<span class="pl-en">map</span>(<span class="pl-s"><span class="pl-pds">'</span>map<span class="pl-pds">'</span></span>, {
+    center<span class="pl-k">:</span> [<span class="pl-c1">45.1834782</span>, <span class="pl-c1">5.7831946</span>],
+    zoom<span class="pl-k">:</span> <span class="pl-c1">13</span>
+});
+
+<span class="pl-c1">L</span>.<span class="pl-en">tileLayer</span>(<span class="pl-s"><span class="pl-pds">'</span>http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}<span class="pl-pds">'</span></span>, {foo<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span>}).<span class="pl-en">addTo</span>(map);
+
+<span class="pl-k">var</span> latLngs <span class="pl-k">=</span> [[<span class="pl-c1">45.187273</span>, <span class="pl-c1">5.758124</span>], [<span class="pl-c1">45.182772</span>, <span class="pl-c1">5.758516</span>], [<span class="pl-c1">45.185767</span>, <span class="pl-c1">5.747106</span>], [<span class="pl-c1">45.176569</span>, <span class="pl-c1">5.752082</span>], [<span class="pl-c1">45.171863</span>, <span class="pl-c1">5.757120</span>], [<span class="pl-c1">45.168354</span>, <span class="pl-c1">5.755178</span>]];
+<span class="pl-k">var</span> colors <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">'</span>rgb(20, 200, 100)<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>rgb(200, 100, 20)<span class="pl-pds">'</span></span>, <span class="pl-c1">null</span>, <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">'</span>rgb(20, 200, 100)<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>rgb(0, 0, 0)<span class="pl-pds">'</span></span>];
+
+<span class="pl-k">var</span> polyline <span class="pl-k">=</span> <span class="pl-c1">L</span>.<span class="pl-en">polycolor</span>(latLngs, {
+  colors<span class="pl-k">:</span> colors,
+  weight<span class="pl-k">:</span> <span class="pl-c1">5</span>
+}).<span class="pl-en">addTo</span>(map);</pre></div>
+
     <h2>Demo</h2>
 
-    <div id="map" style="width: 100%; height: 400px;"></div>
+    <div id="map" style="width: 100%; height: 500px;"></div>
 
     <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', function() {
-        var leafletPolycolor = require('leaflet-polycolor.js');
+        var leafletPolycolor = require('leaflet-polycolor');
         leafletPolycolor.default(L);
 
         var map = L.map('map', {
-          center: [45.1834782, 5.7831946],
-          zoom: 13
+            center: [45.1834782, 5.7831946],
+            zoom: 13
         });
 
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
 
-        var latLngs = [[45.18, 5.78], [45.17, 5.64], [45.14, 5.84], [45.13, 5.81], [45.17, 5.74], [45.14, 5.72]];
-        var colors = ['rgb(0, 0, 0)', 'rgb(140, 10, 0)', 'rgb(0, 45, 120)', 'rgb(0, 45, 120)', 'rgb(120, 120, 120)', 'rgb(240, 0, 40)'];
+        var latLngs = [[45.187273, 5.758124], [45.182772, 5.758516], [45.185767, 5.747106], [45.176569, 5.752082], [45.171863, 5.757120], [45.168354, 5.755178]];
+        var colors = ['rgb(20, 200, 100)', 'rgb(200, 100, 20)', null, null, 'rgb(20, 200, 100)', 'rgb(0, 0, 0)'];
 
         var polyline = L.polycolor(latLngs, {
           colors: colors,
