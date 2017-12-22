@@ -21,6 +21,10 @@ $ npm install --save leaflet-polycolor
 - Run `npm i` in the project folder
 - Run `npm run build`
 
+## Demo
+
+[Demo](https://oliv.github.io/leaflet-polycolor)
+
 ## Usage
 
 ### es6
