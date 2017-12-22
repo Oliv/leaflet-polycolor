@@ -25,6 +25,7 @@
   "homepage": "https://github.com/Oliv/leaflet-polycolor#readme",
   "devDependencies": {
     "babel-brunch": "^6.1.1",
+    "babel-preset-env": "^1.6.1",
     "brunch": "^2.10.12",
     "uglify-js-brunch": "^2.10.0"
   },
