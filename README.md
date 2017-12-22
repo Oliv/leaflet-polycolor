@@ -37,10 +37,36 @@ const map = L.map('map', {
 
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
 
-const latLngs = [[45.18, 5.78], [45.19, 5.79], [45.17, 5.77]];
-const colors = ['rgb(0, 0, 0)', 'rgb(40, 10, 0)', 'rgb(0, 45, 120)'];
+const latLngs = [[45.187273, 5.758124], [45.182772, 5.758516], [45.185767, 5.747106], [45.176569, 5.752082], [45.171863, 5.757120], [45.168354, 5.755178]];
+const colors = ['rgb(20, 200, 100)', 'rgb(200, 100, 20)', null, null, 'rgb(20, 200, 100)', 'rgb(0, 0, 0)'];
 
 const polyline = L.polycolor(latLngs, {
+  colors: colors,
+  weight: 5
+}).addTo(map);
+```
+
+### normal include of the minified file
+
+```html
+<script src="leaflet-polycolor.min.js"></script>
+```
+
+```js
+var leafletPolycolor = require('leaflet-polycolor');
+leafletPolycolor.default(L);
+
+var map = L.map('map', {
+    center: [45.1834782, 5.7831946],
+    zoom: 13
+});
+
+L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
+
+var latLngs = [[45.187273, 5.758124], [45.182772, 5.758516], [45.185767, 5.747106], [45.176569, 5.752082], [45.171863, 5.757120], [45.168354, 5.755178]];
+var colors = ['rgb(20, 200, 100)', 'rgb(200, 100, 20)', null, null, 'rgb(20, 200, 100)', 'rgb(0, 0, 0)'];
+
+var polyline = L.polycolor(latLngs, {
   colors: colors,
   weight: 5
 }).addTo(map);

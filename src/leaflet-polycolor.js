@@ -1,6 +1,8 @@
 export default function(L) {
   const Renderer = L.Renderer.RendererGradient = L.Canvas.extend({
     _updatePoly: function(layer) {
+      const options = layer.options;
+
       if (!this._drawing) return;
 
       let i, j, len2, p, prev;
@@ -12,31 +14,54 @@ export default function(L) {
 
       this._drawnLayers[layer._leaflet_id] = layer;
 
-      for (i = 0; i < len; i++) {
-        for (j = 1, len2 = parts[i].length; j < len2; j++) {
-          p = parts[i][j];
-          prev = parts[i][j - 1];
+      if (options.stroke && options.weight !== 0) {
+        for (i = 0; i < len; i++) {
+          for (j = 0, len2 = parts[i].length - 1; j < len2; j++) {
+            p = parts[i][j + 1];
+            prev = parts[i][j];
 
-          this._fillGradient(ctx, layer, prev, p, j);
+            ctx.beginPath();
 
-          ctx.beginPath();
+            ctx.moveTo(prev.x, prev.y);
+            ctx.lineTo(p.x, p.y);
 
-          ctx.moveTo(prev.x, prev.y);
-          ctx[j ? 'lineTo' : 'moveTo'](p.x, p.y);
-
-          ctx.closePath();
+            this._stroke(ctx, layer, prev, p, j);
+          }
         }
       }
+
+      if (options.fill) {
+        ctx.beginPath();
+
+        for (i = 0; i < len; i++) {
+          for (j = 0, len2 = parts[i].length - 1; j < len2; j++) {
+            p = parts[i][j + 1];
+            prev = parts[i][j];
+
+            if (j === 0)
+              ctx.moveTo(prev.x, prev.y);
+            ctx.lineTo(p.x, p.y);
+          }
+        }
+
+        this._fill(ctx, layer, prev, p, j);
+      }
+
     },
 
-    _fillGradient: function(ctx, layer, prev, p, j) {
+    _fill: function(ctx, layer, prev, p, j) {
       const options = layer.options;
 
       if (options.fill) {
         ctx.globalAlpha = options.fillOpacity;
         ctx.fillStyle = options.fillColor || options.color;
+
         ctx.fill(options.fillRule || 'evenodd');
       }
+    },
+
+    _stroke: function(ctx, layer, prev, p, j) {
+      const options = layer.options;
 
       if (options.stroke && options.weight !== 0) {
         if (ctx.setLineDash) {
@@ -48,20 +73,20 @@ export default function(L) {
 
         ctx.lineCap = options.lineCap;
         ctx.lineJoin = options.lineJoin;
+
         ctx.stroke();
+
+        ctx.closePath();
       }
     },
 
     _getStrokeGradient: function(ctx, layer, prev, p, j) {
       const options = layer.options;
 
-      if (!options.colors[j])
-        return options.color;
-
       // Create a gradient for each segment, pick start and end colors from colors options
       const gradient = ctx.createLinearGradient(prev.x, prev.y, p.x, p.y);
-      const gradientStartRGB = options.colors[j - 1] || options.colors[j];
-      const gradientEndRGB = options.colors[j];
+      const gradientStartRGB = options.colors[j] || options.color;
+      const gradientEndRGB = options.colors[j + 1] || options.color;
 
       gradient.addColorStop(0, gradientStartRGB);
       gradient.addColorStop(1, gradientEndRGB);
