@@ -55,12 +55,12 @@ export default function(L) {
     _getStrokeGradient: function(ctx, layer, prev, p, j) {
       const options = layer.options;
 
-      if (!options.colors[j - 1] || !options.colors[j])
+      if (!options.colors[j])
         return options.color;
 
       // Create a gradient for each segment, pick start and end colors from colors options
       const gradient = ctx.createLinearGradient(prev.x, prev.y, p.x, p.y);
-      const gradientStartRGB = options.colors[j - 1];
+      const gradientStartRGB = options.colors[j - 1] || options.colors[j];
       const gradientEndRGB = options.colors[j];
 
       gradient.addColorStop(0, gradientStartRGB);

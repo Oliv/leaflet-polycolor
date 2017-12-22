@@ -2,7 +2,7 @@ module.exports = {
   files: {
     javascripts: {
       joinTo: {
-        'polycolor.min.js': '**/polycolor.js'
+        'leaflet-polycolor.min.js': '**/leaflet-polycolor.js'
       }
     }
   },
