@@ -99,12 +99,13 @@ export default function(L) {
     _colorParts: [],
 
     options: {
-      colors: [],
-      renderer: new Renderer()
+      colors: []
     },
 
     initialize: function(latlngs, options) {
       L.Util.setOptions(this, options);
+      this.options.renderer = new Renderer();
+
       this._setLatLngs(latlngs);
       this._colorParts = [];
     },
