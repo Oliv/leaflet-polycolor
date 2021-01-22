@@ -12,7 +12,7 @@ export default function(L) {
 
       if (!len) return;
 
-      this._drawnLayers[layer._leaflet_id] = layer;
+      this._layers[layer._leaflet_id] = layer;
 
       if (options.stroke && options.weight !== 0) {
         for (i = 0; i < len; i++) {
