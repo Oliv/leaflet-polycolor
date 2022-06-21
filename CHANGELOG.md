@@ -1,5 +1,13 @@
 # Changelog
-All notable changes to this project will be documented in this file.
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## 1.1.0 (2022-06-21)
+
+
+### Features
+
+* add useGradient option ([9e21ddd](https://github.com/Oliv/leaflet-polycolor/commit/9e21ddde77d00465d533802b388138a8ee591247))
 
 ## [0.9.0] - 2017-12-18
 - Plugin drop
