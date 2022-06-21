@@ -46,6 +46,7 @@ const colors = ['rgb(20, 200, 100)', 'rgb(200, 100, 20)', null, null, 'rgb(20, 2
 
 const polyline = L.polycolor(latLngs, {
   colors: colors,
+  useGradient: true,
   weight: 5
 }).addTo(map);
 ```
@@ -72,6 +73,7 @@ var colors = ['rgb(20, 200, 100)', 'rgb(200, 100, 20)', null, null, 'rgb(20, 200
 
 var polyline = L.polycolor(latLngs, {
   colors: colors,
+  useGradient: true,
   weight: 5
 }).addTo(map);
 ```
@@ -82,11 +84,12 @@ var polyline = L.polycolor(latLngs, {
 
 #### Options
 - colors `<Array>` : An array of rgb colors strings `rgb(x,y,z)`
+- useGradient `<Boolean>` : Use or not gradient to smooth colors. Defaults to `true`
 
 If `colors` are `undefined`, the default `color` parameter is used.
 To leave default color, use `null` in colors. `['rgb(0, 0, 0)', null, 'rgb(0, 45, 120)']`
 
-`clip` and `smoothFactor` parameters are disabled for now, planned in v1.0.0.
+`clip` and `smoothFactor` parameters are disabled for now, planned in v1.1.0.
 
 ## License
 
