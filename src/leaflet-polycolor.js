@@ -67,9 +67,10 @@ export default function(L) {
         if (ctx.setLineDash) {
           ctx.setLineDash(layer.options && layer.options._dashArray || []);
         }
+
         ctx.globalAlpha = options.opacity;
         ctx.lineWidth = options.weight;
-        ctx.strokeStyle = this._getStrokeGradient(ctx, layer, prev, p, j);
+        ctx.strokeStyle = options.useGradient ? this._getStrokeGradient(ctx, layer, prev, p, j) : (options.colors[j] || options.color);
 
         ctx.lineCap = options.lineCap;
         ctx.lineJoin = options.lineJoin;
@@ -99,11 +100,13 @@ export default function(L) {
     _colorParts: [],
 
     options: {
-      colors: []
+      colors: [],
+      useGradient: true,
     },
 
     initialize: function(latlngs, options) {
       L.Util.setOptions(this, options);
+
       this.options.renderer = new Renderer();
 
       this._setLatLngs(latlngs);

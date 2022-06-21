@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Leaflet-polycolor</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+
+  <script src="../dist/leaflet-polycolor.min.js"></script>
+</head>
+<body>
+  <div class="markdown-body" style="width: 100%; margin: 0 auto;">
+    <div id="map" style="width: 100%; height: 40vh;"></div>
+    <div id="map2" style="width: 100%; height: 40vh;"></div>
+
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+        var leafletPolycolor = require('leaflet-polycolor');
+        leafletPolycolor.default(L);
+
+        var map = L.map('map', {
+            center: [45.1834782, 5.7831946],
+            zoom: 13
+        });
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
+
+        var latLngs = [[45.187273, 5.758124], [45.182772, 5.758516], [45.185767, 5.747106], [45.176569, 5.752082], [45.171863, 5.757120], [45.168354, 5.755178]];
+        var colors = ['rgb(20, 200, 100)', 'rgb(200, 100, 20)', null, null, 'rgb(20, 200, 100)', 'rgb(0, 0, 0)'];
+
+        var polyline = L.polycolor(latLngs, {
+          colors: colors,
+          weight: 5,
+          useGradient: true,
+        }).addTo(map);
+
+        var map2 = L.map('map2', {
+            center: [45.1834782, 5.75],
+            zoom: 14
+        });
+
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map2);
+
+        var latLngs = [[45.187273, 5.758124], [45.182772, 5.758516], [45.176569, 5.752082], [45.171863, 5.757120], [45.168354, 5.755178]];
+        var colors = [null, null, 'rgb(20, 200, 100)', null, null];
+
+        var polyline2 = L.polycolor(latLngs, {
+          colors: colors,
+          weight: 5,
+          useGradient: false,
+        }).addTo(map2);
+      }, false);
+
+    </script>
+  </div>
+</body>
