@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
   <title>Leaflet-polycolor</title>
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"></script>
 
-  <script src="../dist/leaflet-polycolor.min.js"></script>
+  <script src="./leaflet-polycolor.min.js"></script>
 </head>
 <body>
   <div class="markdown-body" style="width: 100%; margin: 0 auto;">
@@ -17,12 +17,12 @@
 
     <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', function() {
-        var leafletPolycolor = require('leaflet-polycolor');
-        leafletPolycolor.default(L);
+        leafletPolycolor(L);
 
         var map = L.map('map', {
             center: [45.1834782, 5.7831946],
-            zoom: 13
+            zoom: 13,
+            preferCanvas: true,
         });
 
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
@@ -38,7 +38,8 @@
 
         var map2 = L.map('map2', {
             center: [45.1834782, 5.75],
-            zoom: 14
+            zoom: 14,
+            preferCanvas: true,
         });
 
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map2);

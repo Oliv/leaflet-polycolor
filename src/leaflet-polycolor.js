@@ -1,7 +1,25 @@
-export default function(L) {
-  const Renderer = L.Renderer.RendererGradient = L.Canvas.extend({
-    _updatePoly: function(layer) {
+import * as LineUtil from 'leaflet/src/geometry/LineUtil';
+import { LatLng, toLatLng } from 'leaflet/src/geo/LatLng';
+
+const _getStrokeGradient = (ctx, layer, prev, p) => {
+  const options = layer.options;
+
+  // Create a gradient for each segment, pick start and end colors from colors options
+  const gradient = ctx.createLinearGradient(prev.x, prev.y, p.x, p.y);
+  const gradientStartRGB = prev._color || options.color;
+  const gradientEndRGB = p._color || options.color;
+
+  gradient.addColorStop(0, gradientStartRGB);
+  gradient.addColorStop(1, gradientEndRGB);
+
+  return gradient;
+};
+
+const leafletPolycolor = function(L) {
+  L.Canvas.include({
+    _updatePoly: function(layer, closed) {
       const options = layer.options;
+      const prevColor = options.color;
 
       if (!this._drawing) return;
 
@@ -14,86 +32,31 @@ export default function(L) {
 
       this._layers[layer._leaflet_id] = layer;
 
-      if (options.stroke && options.weight !== 0) {
-        for (i = 0; i < len; i++) {
-          for (j = 0, len2 = parts[i].length - 1; j < len2; j++) {
-            p = parts[i][j + 1];
-            prev = parts[i][j];
+      for (i = 0; i < len; i++) {
+        for (j = 0, len2 = parts[i].length - 1; j < len2; j++) {
+          p = parts[i][j + 1];
+          prev = parts[i][j];
 
-            ctx.beginPath();
+          ctx.beginPath();
 
-            ctx.moveTo(prev.x, prev.y);
-            ctx.lineTo(p.x, p.y);
+          ctx.moveTo(prev.x, prev.y);
+          ctx.lineTo(p.x, p.y);
 
-            this._stroke(ctx, layer, prev, p, j);
+          if (options.colors?.length) {
+            options.color = options.useGradient ? this._getStrokeGradient(ctx, layer, prev, p) : (p._color ?? options.color)
           }
+
+          this._fillStroke(ctx, layer, prev, p, j);
+
+          options.color = prevColor;
+        }
+        if (closed) {
+          ctx.closePath();
         }
       }
-
-      if (options.fill) {
-        ctx.beginPath();
-
-        for (i = 0; i < len; i++) {
-          for (j = 0, len2 = parts[i].length - 1; j < len2; j++) {
-            p = parts[i][j + 1];
-            prev = parts[i][j];
-
-            if (j === 0)
-              ctx.moveTo(prev.x, prev.y);
-            ctx.lineTo(p.x, p.y);
-          }
-        }
-
-        this._fill(ctx, layer, prev, p, j);
-      }
-
     },
 
-    _fill: function(ctx, layer, prev, p, j) {
-      const options = layer.options;
-
-      if (options.fill) {
-        ctx.globalAlpha = options.fillOpacity;
-        ctx.fillStyle = options.fillColor || options.color;
-
-        ctx.fill(options.fillRule || 'evenodd');
-      }
-    },
-
-    _stroke: function(ctx, layer, prev, p, j) {
-      const options = layer.options;
-
-      if (options.stroke && options.weight !== 0) {
-        if (ctx.setLineDash) {
-          ctx.setLineDash(layer.options && layer.options._dashArray || []);
-        }
-
-        ctx.globalAlpha = options.opacity;
-        ctx.lineWidth = options.weight;
-        ctx.strokeStyle = options.useGradient ? this._getStrokeGradient(ctx, layer, prev, p, j) : (options.colors[j] || options.color);
-
-        ctx.lineCap = options.lineCap;
-        ctx.lineJoin = options.lineJoin;
-
-        ctx.stroke();
-
-        ctx.closePath();
-      }
-    },
-
-    _getStrokeGradient: function(ctx, layer, prev, p, j) {
-      const options = layer.options;
-
-      // Create a gradient for each segment, pick start and end colors from colors options
-      const gradient = ctx.createLinearGradient(prev.x, prev.y, p.x, p.y);
-      const gradientStartRGB = options.colors[j] || options.color;
-      const gradientEndRGB = options.colors[j + 1] || options.color;
-
-      gradient.addColorStop(0, gradientStartRGB);
-      gradient.addColorStop(1, gradientEndRGB);
-
-      return gradient;
-    },
+    _getStrokeGradient,
   });
 
   const Polycolor = L.Polycolor = L.Polyline.extend({
@@ -104,35 +67,51 @@ export default function(L) {
       useGradient: true,
     },
 
-    initialize: function(latlngs, options) {
-      L.Util.setOptions(this, options);
+    // recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
+    _convertLatLngs(latlngs) {
+      const result = [],
+          flat = LineUtil.isFlat(latlngs);
 
-      this.options.renderer = new Renderer();
+      for (let i = 0, len = latlngs.length; i < len; i++) {
+        if (flat) {
+          result[i] = toLatLng(latlngs[i]);
+          this._bounds.extend(result[i]);
 
-      this._setLatLngs(latlngs);
-      this._colorParts = [];
-    },
-
-    // TODO add clip and smoothFactor
-    _clipPoints: function() {
-      const bounds = this._renderer._bounds;
-
-      this._parts = [];
-      this._colorParts = [];
-      if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
-        return;
+          if (this.options.colors?.[i]) {
+            result[i]._color = this.options.colors?.[i];
+          }
+        } else {
+          result[i] = this._convertLatLngs(latlngs[i]);
+        }
       }
 
-      this._parts = this._rings;
-      this._colorParts = this.options.colors;
+      return result;
     },
 
-    _update: function() {
-      if (!this._map) return;
+    // recursively turns latlngs into a set of rings with projected coordinates
+    _projectLatlngs(latlngs, result, projectedBounds) {
+      const flat = latlngs[0] instanceof LatLng,
+            len = latlngs.length;
+      let i, ring;
 
-      this._clipPoints();
-      this._updatePath();
-    }
+      if (flat) {
+        ring = [];
+        for (i = 0; i < len; i++) {
+          ring[i] = this._map.latLngToLayerPoint(latlngs[i]);
+
+          if (latlngs[i]._color) {
+            ring[i]._color = latlngs[i]._color;
+          }
+
+          projectedBounds.extend(ring[i]);
+        }
+        result.push(ring);
+      } else {
+        for (i = 0; i < len; i++) {
+          this._projectLatlngs(latlngs[i], result, projectedBounds);
+        }
+      }
+    },
   });
 
   // Factory
@@ -142,3 +121,9 @@ export default function(L) {
 
   return Polycolor;
 }
+
+if (module.hot) {
+  global.leafletPolycolor = leafletPolycolor;
+}
+
+export default leafletPolycolor;
