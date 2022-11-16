@@ -1,5 +1,4 @@
 import * as LineUtil from 'leaflet/src/geometry/LineUtil';
-import { Bounds } from 'leaflet/src/geometry/Bounds';
 import { LatLng, toLatLng } from 'leaflet/src/geo/LatLng';
 
 const _getStrokeGradient = (ctx, layer, prev, p) => {
@@ -15,40 +14,6 @@ const _getStrokeGradient = (ctx, layer, prev, p) => {
 
   return gradient;
 };
-
-// @function pointsToPath(rings: Point[], closed: Boolean): String
-// Generates a SVG path string for multiple rings, with each ring turning
-// into "M..L..L.." instructions
-export function pointsToPaths(rings, closed) {
-	const strings = [];
-
-  let i, j, len, len2, points, p, prev, str;
-
-	for (i = 0, len = rings.length; i < len; i++) {
-		points = rings[i];
-
-		for (j = 0, len2 = points.length; j < len2; j++) {
-			p = points[j];
-			prev = points[j - 1];
-
-      str = `${(j ? 'L' : 'M') + p.x} ${p.y}`;
-
-      if (prev) {
-        str = `M ${prev.x} ${prev.y}${str}`;
-      }
-
-			strings.push(str);
-    }
-
-		// closes the ring for polygons
-    if (closed) {
-      strings.push('z');
-    }
-	}
-
-	// SVG complains about empty path strings
-	return strings.length ? strings : ['M0 0'];
-}
 
 const leafletPolycolor = function(L) {
   L.Canvas.include({
@@ -147,64 +112,6 @@ const leafletPolycolor = function(L) {
         }
       }
     },
-
-    _project() {
-      const pxBounds = new Bounds();
-      this._rings = [];
-      this._projectLatlngs(this._latlngs, this._rings, pxBounds);
-
-      if (this._bounds.isValid() && pxBounds.isValid()) {
-        this._rawPxBounds = pxBounds;
-        this._updateBounds();
-      }
-    },
-
-    _clipPoints() {
-      const bounds = this._renderer._bounds;
-
-      this._parts = [];
-      if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
-        return;
-      }
-
-      if (this.options.noClip) {
-        this._parts = this._rings;
-        return;
-      }
-
-      const parts = this._parts;
-      let i, j, k, len, len2, segment, points;
-
-      for (i = 0, k = 0, len = this._rings.length; i < len; i++) {
-        points = this._rings[i];
-
-        for (j = 0, len2 = points.length; j < len2 - 1; j++) {
-          segment = LineUtil.clipSegment(points[j], points[j + 1], bounds, j, true);
-
-          if (!segment) { continue; }
-
-          parts[k] = parts[k] || [];
-          parts[k].push(segment[0]);
-
-          // if segment goes out of screen, or it's the last one, it's the end of the line part
-          if ((segment[1] !== points[j + 1]) || (j === len2 - 2)) {
-            parts[k].push(segment[1]);
-            k++;
-          }
-        }
-      }
-    },
-
-    // simplify each clipped part of the polyline for performance
-    _simplifyPoints() {
-      const parts = this._parts,
-          tolerance = this.options.smoothFactor;
-
-      for (let i = 0, len = parts.length; i < len; i++) {
-        parts[i] = LineUtil.simplify(parts[i], tolerance);
-      }
-
-    },
   });
 
   // Factory
@@ -215,6 +122,8 @@ const leafletPolycolor = function(L) {
   return Polycolor;
 }
 
-window.leafletPolycolor = leafletPolycolor;
-console.log(window.leafletPolycolor);
+if (module.hot) {
+  global.leafletPolycolor = leafletPolycolor;
+}
+
 export default leafletPolycolor;

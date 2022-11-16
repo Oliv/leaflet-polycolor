@@ -7,4 +7,5 @@ module.exports = {
     filename: 'leaflet-polycolor.min.js',
   },
   mode: 'production',
+  target: 'web',
 };

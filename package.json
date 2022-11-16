@@ -5,6 +5,7 @@
   "main": "src/leaflet-polycolor.js",
   "scripts": {
     "start": "webpack --watch",
+    "serve": "npx webpack serve --static examples",
     "prepublish": "webpack build",
     "build": "webpack build"
   },
@@ -31,7 +32,8 @@
     "babel-preset-env": "^1.6.1",
     "eslint": "^8.27.0",
     "webpack": "^5.75.0",
-    "webpack-cli": "^4.10.0"
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
     "leaflet": "^1.9.2"
