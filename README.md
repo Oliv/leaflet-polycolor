@@ -1,6 +1,10 @@
 # leaflet-polycolor [![NPM version](https://badge.fury.io/js/leaflet-polycolor.svg)](https://npmjs.org/package/leaflet-polycolor) [![Build Status](https://travis-ci.org/Oliv/leaflet-polycolor.svg?branch=master)](https://travis-ci.org/Oliv/leaflet-polycolor)
 
-Color each polyline segment
+Color each polyline segment separatly
+
+## Warning
+
+This module only works with leaflet in canvas rendering mode. Be sure to add `preferCanvas: true` to your map options.
 
 ## Installation
 
@@ -63,7 +67,8 @@ leafletPolycolor.default(L);
 
 var map = L.map('map', {
     center: [45.1834782, 5.7831946],
-    zoom: 13
+    zoom: 13,
+    preferCanvas: true,
 });
 
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);
@@ -88,8 +93,6 @@ var polyline = L.polycolor(latLngs, {
 
 If `colors` are `undefined`, the default `color` parameter is used.
 To leave default color, use `null` in colors. `['rgb(0, 0, 0)', null, 'rgb(0, 45, 120)']`
-
-`clip` and `smoothFactor` parameters are disabled for now, planned in v1.1.0.
 
 ## License
 
