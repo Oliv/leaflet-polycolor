@@ -1,6 +1,6 @@
 # leaflet-polycolor [![NPM version](https://badge.fury.io/js/leaflet-polycolor.svg)](https://npmjs.org/package/leaflet-polycolor) [![Build Status](https://travis-ci.org/Oliv/leaflet-polycolor.svg?branch=master)](https://travis-ci.org/Oliv/leaflet-polycolor)
 
-Color each polyline segment separatly
+Color each polyline segment separately
 
 ## Warning
 
