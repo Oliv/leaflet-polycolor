@@ -43,7 +43,7 @@ const leafletPolycolor = function(L) {
           ctx.lineTo(p.x, p.y);
 
           if (options.colors?.length) {
-            options.color = options.useGradient ? this._getStrokeGradient(ctx, layer, prev, p) : (p._color ?? options.color)
+            options.color = options.useGradient ? this._getStrokeGradient(ctx, layer, prev, p) : (prev._color ?? options.color);
           }
 
           this._fillStroke(ctx, layer, prev, p, j);
