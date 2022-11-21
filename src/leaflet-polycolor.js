@@ -17,7 +17,7 @@ const _getStrokeGradient = (ctx, layer, prev, p) => {
 
 const leafletPolycolor = function(L) {
   L.Canvas.include({
-    _updatePoly: function(layer, closed) {
+    _updatePolycolor: function(layer, closed) {
       const options = layer.options;
       const prevColor = options.color;
 
@@ -112,6 +112,10 @@ const leafletPolycolor = function(L) {
         }
       }
     },
+
+    _updatePath() {
+		  this._renderer._updatePolycolor(this);
+	  },
   });
 
   // Factory
@@ -122,7 +126,7 @@ const leafletPolycolor = function(L) {
   return Polycolor;
 }
 
-if (module?.hot) {
+if (typeof module !== 'undefined' && module?.hot) {
   global.leafletPolycolor = leafletPolycolor;
 }
 
