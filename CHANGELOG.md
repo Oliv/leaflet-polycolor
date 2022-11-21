@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.3](https://github.com/Oliv/leaflet-polycolor/compare/v2.0.2...v2.0.3) (2022-11-21)
+
+
+### Bug Fixes
+
+* use custom renderer function for polycolor, to not mess up with other polys ([fc8c887](https://github.com/Oliv/leaflet-polycolor/commit/fc8c887bdfa52031b3fdc809cd0e71bd3e92f765))
+
 ### [2.0.2](https://github.com/Oliv/leaflet-polycolor/compare/v2.0.1...v2.0.2) (2022-11-21)
 
 
