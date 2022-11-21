@@ -1,6 +1,6 @@
 {
   "name": "leaflet-polycolor",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Colorize each polyline segment separately",
   "main": "src/leaflet-polycolor.js",
   "scripts": {
