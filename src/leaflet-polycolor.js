@@ -122,7 +122,7 @@ const leafletPolycolor = function(L) {
   return Polycolor;
 }
 
-if (module.hot) {
+if (module?.hot) {
   global.leafletPolycolor = leafletPolycolor;
 }
 
