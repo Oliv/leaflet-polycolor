@@ -94,6 +94,13 @@ var polyline = L.polycolor(latLngs, {
 If `colors` are `undefined`, the default `color` parameter is used.
 To leave default color, use `null` in colors. `['rgb(0, 0, 0)', null, 'rgb(0, 45, 120)']`
 
+## FAQ
+
+#### Usage with `@vue-leaflet/vue-leaflet`
+
+* Add `:use-global-leaflet="false"` to your `l-map` tag
+* Import separately leaflet with `import * as L from 'leaflet/dist/leaflet-src.esm';`
+
 ## License
 
 MIT © [Olivier Gasc](https://github.com/Oliv)
