@@ -126,8 +126,5 @@ const leafletPolycolor = function(L) {
   return Polycolor;
 }
 
-if (typeof module !== 'undefined' && module?.hot) {
-  global.leafletPolycolor = leafletPolycolor;
-}
-
+global.leafletPolycolor = leafletPolycolor;
 export default leafletPolycolor;

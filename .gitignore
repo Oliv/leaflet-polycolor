@@ -49,3 +49,4 @@ Temporary Items
 node_modules/
 *.sublime-project
 *.sublime-workspace
+*.code-workspace
